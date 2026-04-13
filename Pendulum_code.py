@@ -10,9 +10,11 @@ class Pendulum():
         self.initial_angle_radian = angle_radian
         self.g = g
         self.length_pendulum = length_pendulum
+        self.initial_length_pendulum = length_pendulum
         self.total_time = total_time
         self.steps = steps
         self.damping = damping
+        self.initial_damping = damping
 
         self.angular_velocity = 0.0
         self.angular_acceleration = 0.0
@@ -73,9 +75,8 @@ class Pendulum():
 
 
     def setup_animation_pendulum(self):  # setting up the animation of the pednulum
-        self.ax_animation.set_xlim(-0.15, 0.15)
-        self.ax_animation.set_ylim(-0.05, 0.15)
-        self.ax_animation.set_title("Pendulum", fontsize=12, fontweight='bold')
+        self.ax_animation.set_xlim(-self.length_pendulum, self.length_pendulum)
+        self.ax_animation.set_ylim(-self.length_pendulum - 0.5, self.length_pendulum + 0.5)
         self.ax_animation.set_aspect('equal') 
         self.ax_animation.axis('off')
 
@@ -83,6 +84,7 @@ class Pendulum():
 
         self.pendulum_line, = self.ax_animation.plot([], [], 'o-')
 
+    
     def setup_angle_radian_graph(self):  # setting up the angle graph animation 
         self.ax_angle_radian_graph.set_title("Angle (rad) - Time (s)")
         self.ax_angle_radian_graph.set_xlabel("Time")
@@ -163,13 +165,18 @@ class Pendulum():
         self.return_button = Button(ax_return, "Return")
         self.return_button.on_clicked(self.close_window)
 
+    
     def reset(self, event = None):  # actions when reset button is pressed
         print("Reset button pressed. \n")
 
         self.angle_radian = self.initial_angle_radian
-        self.length_pendulum = 1.0
-        self.damping = 0.5
+        self.length_pendulum = self.initial_length_pendulum
+        self.damping = self.initial_damping
 
+        self.initial_angle_slider.set_val(self.initial_angle_radian)
+        self.length_pendulum_slider.set_val(self.initial_length_pendulum)
+        self.damping_slider.set_val(self.initial_damping)
+        
         self.reset_graph()
 
 
